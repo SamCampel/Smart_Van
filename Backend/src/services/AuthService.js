@@ -1,38 +1,63 @@
 const DriverRepository = require ('../repositories/DriverRepository');
+const ParentRepository = require('../repositories/ParentRepository');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/auth');
 const { id } = require('../models/DriverValidation');
 
 const AuthService = {
+    async login(email, password, userType) {
+        let user;
+        let userTable;
 
-    async login(email, password) {
-        const driver = await DriverRepository.findByEmail(email);
-        if (!driver) {
+        if (userType === 'driver') {
+            user = await DriverRepository.findByEmail(email);
+            userTable = 'driver';
+        } else if (userType === 'parent') {
+            user = await ParentRepository.findByEmail(email);
+            userTable = 'parent';
+        } else {
+            throw new Error('Tipo de usuário inválido');
+        }
+
+        if (!user) {
             throw new Error('Email ou senha inválidos');
         }
-        
-        const isValidPassword = await bcrypt.compare(password, driver.password_hash);
+
+        const isValidPassword = await bcrypt.compare(password, user.password_hash);
         if (!isValidPassword) {
             throw new Error('Email ou senha inválidos');
         }
 
         const token = generateToken({
-            id: driver.id,
-            email: driver.email,
-            name: driver.name_driver
+            id: user.id,
+            email: user.email,
+            name: user.name || user.name_driver,
+            userType: userTable
         });
 
-        return{
-            token,
-            driver: {
-                id: driver.id,
-                email: driver.email,
-                name: driver.name_driver,
-                vehicle_plate: driver.vehicle_plate
-            }
-        };
-
-        
+        if (userType === 'driver') {
+            return {
+                token,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name_driver,
+                    vehicle_plate: user.vehicle_plate,
+                    userType: 'driver'
+                }
+            };
+        } else {
+            return {
+                token,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    phone: user.phone,
+                    userType: 'parent'
+                }
+            };
+        }
     }
 };
 
