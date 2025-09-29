@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import API from './services/api';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -11,14 +12,39 @@ function App() {
     setCurrentPage(page);
   };
 
-  const handleLogin = (email, password, userType) => {
-    console.log('Login attempt:', { email, userType });
-    alert(`Login realizado como ${userType}: ${email}`);
-  }
+  const handleLogin = async (email, password, userType) => {
+    try {
+      const response = await API.post('/login', {
+        email,
+        password,
+        userType
+      });
 
-  const handleRegister = (formData) => {
-    console.log('Cadastrando:', formData);
-    alert(`Cadastro simulado: ${formData.name} como ${formData.userType}`);
+      localStorage.setItem('token', response.data.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      
+      alert(`Login realizado como ${response.data.data.user.name}`);
+
+      setCurrentPage('dashboard');
+      
+    } catch (error) {
+      alert('Erro no login: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleRegister = async (formData) => {
+    try{
+      const endpoint = formData.userType === 'driver' ? '/drivers' : '/parents';
+      
+      const response = await API.post(endpoint, formData);
+
+      alert(`Cadastro realizado : ${response.data.message}`);
+
+      setCurrentPage('login');
+    } catch (error) {
+      alert('Erro ao se cadastrar: ' + (error.response?.data?.message || error.message)); 
+    }
+    
   };
 
   return (

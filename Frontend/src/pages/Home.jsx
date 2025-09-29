@@ -1,8 +1,8 @@
 function Home({ onNavigate }) {
   return (
-    <div className="container mt-5">
-      <h1 className="text-primary text-center">🚌 SmartVan</h1>
-      <p className="text-center text-muted">Sistema de Transporte Escolar</p>
+    <div className="container mt-5" style={{ minHeight: '80vh'}}>
+      <h1 className="text-primary text-center">SmartVan</h1>
+      <p className="text-center text-muted">Serviços de Transporte Escolar</p>
       
       <div className="text-center mt-4">
         <button 
