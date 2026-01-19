@@ -22,29 +22,36 @@ function App() {
 
       localStorage.setItem('token', response.data.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
-      
+
       alert(`Login realizado como ${response.data.data.user.name}`);
 
       setCurrentPage('dashboard');
-      
+
     } catch (error) {
       alert('Erro no login: ' + (error.response?.data?.message || error.message));
     }
   };
 
   const handleRegister = async (formData) => {
-    try{
+    try {
       const endpoint = formData.userType === 'driver' ? '/drivers' : '/parents';
-      
-      const response = await API.post(endpoint, formData);
+
+      const response = await API.post(endpoint, {
+        name_driver: formData.name,
+        email: formData.email,
+        cpf: formData.cpf,
+        phone: formData.phone,
+        password: formData.password
+      });
+
 
       alert(`Cadastro realizado : ${response.data.message}`);
 
       setCurrentPage('login');
     } catch (error) {
-      alert('Erro ao se cadastrar: ' + (error.response?.data?.message || error.message)); 
+      alert('Erro ao se cadastrar: ' + (error.response?.data?.message || error.message));
     }
-    
+
   };
 
   return (

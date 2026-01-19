@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/auth.css';
 
 function Login({ onBack, onLogin }) {
   const [email, setEmail] = useState('');
@@ -11,58 +12,63 @@ function Login({ onBack, onLogin }) {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <button className="btn btn-outline-secondary mb-3" onClick={onBack}>
-            ← Voltar
-          </button>
-          
-          <h2 className="text-center">Entrar no SmartVan</h2>
-          
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Tipo de Usuário</label>
-              <select 
-                className="form-select"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-              >
-                <option value="driver">Motorista</option>
-                <option value="parent">Responsável</option>
-              </select>
-            </div>
+  <div className="page-auth">
+    <div className="auth-card">
 
-            <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input 
-                type="email"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+      <button
+        className="btn btn-outline-secondary mb-3 btn-back"
+        onClick={onBack}
+      >
+        ← Voltar
+      </button>
 
-            <div className="mb-3">
-              <label className="form-label">Senha</label>
-              <input 
-                type="password"
-                className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+      <h2 className="auth-title">Entrar no RouteGuardian</h2>
+      <p className="auth-subtitle">Acesse sua conta</p>
 
-            <button type="submit" className="btn btn-success w-100">
-              Entrar
-            </button>
-          </form>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Tipo de Usuário</label>
+          <select
+            className="form-select"
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
+          >
+            <option value="driver">Motorista</option>
+            <option value="parent">Responsável</option>
+          </select>
         </div>
-      </div>
+
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="email"
+            className="form-control"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Senha</label>
+          <input
+            type="password"
+            className="form-control"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <button type="submit" className="btn btn-success btn-main w-100">
+          Entrar
+        </button>
+      </form>
+
     </div>
-  );
+  </div>
+);
+
 }
 
 export default Login;   

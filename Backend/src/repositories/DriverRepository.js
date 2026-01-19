@@ -4,24 +4,16 @@ const DriverRepository = {
     async createDriver(driverData) {
 
         const sql = `
-        INSERT INTO drivers (
-            name_driver, cpf, email, phone, birth_date, license_number, vehicle_model, vehicle_plate, vehicle_capacity, regions_served, password_hash
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `;
+  INSERT INTO drivers (name_driver, email, password_hash)
+  VALUES (?, ?, ?)
+`;
 
         const values = [
             driverData.name_driver,
-            driverData.cpf,
             driverData.email,
-            driverData.phone,
-            driverData.birth_date,
-            driverData.license_number,
-            driverData.vehicle_model,
-            driverData.vehicle_plate,
-            driverData.vehicle_capacity,
-            JSON.stringify(driverData.regions_served),
             driverData.password_hash
         ];
+
 
         values.forEach((value, index) => {
             if (value === undefined) {
