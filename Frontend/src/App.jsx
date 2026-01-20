@@ -4,6 +4,19 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import API from './services/api';
+import PrivateRoute from "./routes/PrivateRoute";
+import MapView from "./pages/MapView";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+<Route
+  path="/map"
+  element={
+    <PrivateRoute>
+      <MapView />
+    </PrivateRoute>
+  }
+/>
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');

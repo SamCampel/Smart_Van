@@ -5,7 +5,7 @@ function Home({ onNavigate }) {
     <div className="page-auth">
       <div className="auth-card text-center">
 
-        <h1 className="text-primary text-center">SmartVan</h1>
+        <h1 className="text-primary text-center">RouteGuardian</h1>
         <p className="text-center text-muted">Serviços de Transporte Escolar</p>
 
         <div className="text-center mt-4">
