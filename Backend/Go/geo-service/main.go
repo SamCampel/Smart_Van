@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"log"
 	"math"
@@ -34,37 +33,25 @@ func haversine(lat1, lon1, lat2, lon2 float64) float64 {
 
 func main() {
 
-	conn := connectDB()
-	defer conn.Close(context.Background())
-
-	http.HandleFunc("/distance-from-db", func(w http.ResponseWriter, r *http.Request) {
-
-		var req struct {
-			FromID int `json:"from_id"`
-			ToID   int `json:"to_id"`
-		}
-
-		json.NewDecoder(r.Body).Decode(&req)
-
-		var distance float64
-
-		query := `
-			SELECT ST_Distance(a.geom, b.geom) / 1000
-			FROM locations a, locations b
-			WHERE a.id = $1 AND b.id = $2
-		`
-
-		err := conn.QueryRow(context.Background(), query, req.FromID, req.ToID).Scan(&distance)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+	http.HandleFunc("/distance", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
 
-		json.NewEncoder(w).Encode(map[string]float64{
-			"distance_km": distance,
-		})
+		var req DistanceRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Invalid body", http.StatusBadRequest)
+			return
+		}
+
+		dist := haversine(req.Lat1, req.Lon1, req.Lat2, req.Lon2)
+
+		resp := DistanceResponse{DistanceKm: dist}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
 	})
 
-	log.Println("Geo-service rodando na porta 8080")
+	log.Println("Geo-service running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -6,6 +6,7 @@ const MapService = require('./services/MapService');
 const routeRoutes = require('./routes/routes');
 const parentRoutes = require('./routes/parents');
 const geoProxyRoutes = require('./routes/geoProxy');
+const geoRoutes = require('./routes/geo');
 const cors = require('cors');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api', authRoutes);
 app.use('/api/routes', routeRoutes);
 app.use('/api/parents', parentRoutes);
 app.use('/api/geo', geoProxyRoutes);
+app.use('/api/geo', geoRoutes);
 
 
 async function testConnection() {
