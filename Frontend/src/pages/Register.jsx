@@ -7,7 +7,8 @@ function Register({ onBack, onRegister }) {
         email: '',
         phone: '',
         password: '',
-        userType: 'driver'
+        userType: 'parent',
+        cpf: ''
     });
 
     const handleChange = (e) => {
@@ -51,9 +52,9 @@ function Register({ onBack, onRegister }) {
                                 <label className="form-label">Nome Completo</label>
                                 <input
                                     type="text"
-                                    name="name"
+                                    name="cpf"
                                     className="form-control"
-                                    value={formData.name}
+                                    value={formData.cpf}
                                     onChange={handleChange}
                                     required
                                 />
@@ -63,7 +64,7 @@ function Register({ onBack, onRegister }) {
                                 <label className="form-label">CPF (sem pontos)</label>
                                 <input
                                     type="text"
-                                    name="CPF"
+                                    name="cpf"
                                     className="form-control"
                                     value={formData.cpf}
                                     onChange={handleChange}
