@@ -4,11 +4,11 @@ import '../styles/auth.css';
 function Register({ onBack, onRegister }) {
     const [formData, setFormData] = useState({
         name: '',
+        cpf: '',
         email: '',
         phone: '',
         password: '',
         userType: 'parent',
-        cpf: ''
     });
 
     const handleChange = (e) => {
@@ -20,13 +20,21 @@ function Register({ onBack, onRegister }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onRegister(formData);
+
+        const payload = {
+            name_parent: formData.name,
+            cpf: formData.cpf,
+            email: formData.email,
+            phone: formData.phone,
+            password: formData.password
+        };
+
+        onRegister(payload);
     };
 
     return (
         <div className="page-auth">
             <div className="auth-card">
-
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <button className="btn btn-outline-secondary mb-3 btn-back" onClick={onBack}>
@@ -35,6 +43,7 @@ function Register({ onBack, onRegister }) {
 
                         <h3 className="auth-title">Cadastrar no RouteGuardian</h3>
                         <p className="auth-subtitle">Crie sua conta!</p>
+
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label className="form-label">Tipo de Cadastro</label>
@@ -43,6 +52,7 @@ function Register({ onBack, onRegister }) {
                                     className="form-select"
                                     value={formData.userType}
                                     onChange={handleChange}
+                                    disabled // apenas responsável por enquanto
                                 >
                                     <option value="parent">Responsável</option>
                                 </select>
@@ -61,7 +71,7 @@ function Register({ onBack, onRegister }) {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">CPF (sem pontos)</label>
+                                <label className="form-label">CPF (somente números)</label>
                                 <input
                                     type="text"
                                     name="cpf"
