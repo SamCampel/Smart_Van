@@ -7,7 +7,7 @@ function Login({ onLogin }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('driver');
+  const [userType, setUserType] = useState('parent');
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
 
-function Register({ onBack, onRegister }) {
+function Register({ onRegister }) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
+        cpf: '',
         password: '',
-        userType: 'driver'
+        userType: 'parent'
     });
 
     const handleChange = (e) => {
@@ -28,7 +31,7 @@ function Register({ onBack, onRegister }) {
 
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        <button className="btn btn-outline-secondary mb-3 btn-back" onClick={onBack}>
+                        <button className="btn btn-outline-secondary mb-3 btn-back" onClick={() => navigate('/')}>
                             ← Voltar
                         </button>
 
@@ -63,7 +66,7 @@ function Register({ onBack, onRegister }) {
                                 <label className="form-label">CPF (sem pontos)</label>
                                 <input
                                     type="text"
-                                    name="CPF"
+                                    name="cpf"
                                     className="form-control"
                                     value={formData.cpf}
                                     onChange={handleChange}
