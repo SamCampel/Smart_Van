@@ -8,8 +8,19 @@ const parentRoutes = require('./routes/parents');
 const geoProxyRoutes = require('./routes/geoProxy');
 const geoRoutes = require('./routes/geo');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: 'Muitas requisições, tente novamente mais tarde.'
+});
+
+app.use(limiter);
+
 app.use(cors({
   origin: 'https://route-guardian.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -22,7 +33,7 @@ app.use('/api/routes', routeRoutes);
 app.use('/api/parents', parentRoutes);
 app.use('/api/geo', geoProxyRoutes);
 app.use('/api/geo', geoRoutes);
-
+app.use(helmet());
 
 async function testConnection() {
     try {

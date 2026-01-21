@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET || 'segredo123';
+
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET não definido! Defina no .env antes de rodar a aplicação.');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const generateToken = (payload) => {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 };
 
 const verifyToken = (token) => {
