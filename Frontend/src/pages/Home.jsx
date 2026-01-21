@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
 
-function Home({ onNavigate }) {
+function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="page-auth">
       <div className="auth-card text-center">
@@ -11,20 +14,19 @@ function Home({ onNavigate }) {
         <div className="text-center mt-4">
           <button
             className="btn btn-success btn-main me-3"
-            onClick={() => onNavigate('login')}
+            onClick={() => navigate('/login')}
           >
             Entrar
           </button>
 
           <button
             className="btn btn-outline-warning btn-main"
-            onClick={() => onNavigate('register')}
+            onClick={() => navigate('/register')}
           >
             Cadastrar
           </button>
         </div>
       </div>
-
     </div>
   );
 }

@@ -43,7 +43,6 @@ function Register({ onBack, onRegister }) {
                                     value={formData.userType}
                                     onChange={handleChange}
                                 >
-                                    <option value="driver">Motorista</option>
                                     <option value="parent">Responsável</option>
                                 </select>
                             </div>

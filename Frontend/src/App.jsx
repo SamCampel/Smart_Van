@@ -1,29 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/dashboard';
 import API from './services/api';
-import PrivateRoute from "./routes/PrivateRoute";
-import MapView from "./pages/MapView";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PrivateRoute from './routes/PrivateRoute';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 
-<Route
-  path="/map"
-  element={
-    <PrivateRoute>
-      <MapView />
-    </PrivateRoute>
-  }
-/>
-
-
-function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const handleNavigate = (page) => {
-    setCurrentPage(page);
-  };
+function AppRoutes() {
+  const navigate = useNavigate();
 
   const handleLogin = async (email, password, userType) => {
     try {
@@ -37,9 +22,7 @@ function App() {
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
 
       alert(`Login realizado como ${response.data.data.user.name}`);
-
-      setCurrentPage('dashboard');
-
+      navigate('/dashboard');
     } catch (error) {
       alert('Erro no login: ' + (error.response?.data?.message || error.message));
     }
@@ -57,32 +40,35 @@ function App() {
         password: formData.password
       });
 
-
       alert(`Cadastro realizado : ${response.data.message}`);
-
-      setCurrentPage('login');
+      navigate('/login');
     } catch (error) {
       alert('Erro ao se cadastrar: ' + (error.response?.data?.message || error.message));
     }
-
   };
 
   return (
-    <div>
-      {currentPage === 'home' && <Home onNavigate={handleNavigate} />}
-      {currentPage === 'login' && (
-        <Login
-          onBack={() => handleNavigate('home')}
-          onLogin={handleLogin}
-        />
-      )}
-      {currentPage === 'register' && (
-        <Register
-          onBack={() => handleNavigate('home')}
-          onRegister={handleRegister}
-        />
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login onLogin={handleLogin} />} />
+      <Route path="/register" element={<Register onRegister={handleRegister} />} />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 
