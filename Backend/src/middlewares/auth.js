@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
     }
 
     try{
-        const decoded = verifuToken(token);
+        const decoded = verifyToken(token);
         req.driver = decoded;
         next();
 
