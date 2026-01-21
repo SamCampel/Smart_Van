@@ -3,7 +3,7 @@ import '../styles/auth.css';
 
 function Register({ onBack, onRegister }) {
     const [formData, setFormData] = useState({
-        name: '',
+        name_parent: '',
         cpf: '',
         email: '',
         phone: '',
@@ -52,7 +52,7 @@ function Register({ onBack, onRegister }) {
         }
 
         const payload = {
-            name_parent: formData.name,
+            name_parent: formData.name_parent,
             cpf: formData.cpf,
             email: formData.email,
             phone: formData.phone,
@@ -79,9 +79,9 @@ function Register({ onBack, onRegister }) {
                                 <label className="form-label">Nome Completo</label>
                                 <input
                                     type="text"
-                                    name="name"
+                                    name="name_parent"
                                     className="form-control"
-                                    value={formData.name}
+                                    value={formData.name_parent}
                                     onChange={handleChange}
                                     required
                                 />
