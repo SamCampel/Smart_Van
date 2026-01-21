@@ -21,11 +21,24 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
+const allowedOrigins = [
+  'https://route-guardian.vercel.app',
+  'https://route-guardian-rdcur7v0a-samuels-projects-b63dc5c1.vercel.app'
+];
+
 app.use(cors({
-  origin: 'https://route-guardian.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: function(origin, callback){
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Não permitido pelo CORS'));
+    }
+  },
+  methods: ['GET','POST','PUT','DELETE'],
   credentials: true
 }));
+
 app.use(express.json());
 app.use('/api/drivers', driverRoutes);
 app.use('/api', authRoutes);
