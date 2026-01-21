@@ -52,9 +52,9 @@ function Register({ onBack, onRegister }) {
                                 <label className="form-label">Nome Completo</label>
                                 <input
                                     type="text"
-                                    name="cpf"
+                                    name="name"
                                     className="form-control"
-                                    value={formData.cpf}
+                                    value={formData.name}
                                     onChange={handleChange}
                                     required
                                 />
