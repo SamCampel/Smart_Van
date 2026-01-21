@@ -5,6 +5,11 @@ const parentSchema = Joi.object({
         'string.empty': 'O nome completo é obrigatório',
         'any.required': 'O nome completo é obrigatório'
     }),
+
+    cpf: Joi.string().pattern(/^\d{11}$/).required().messages({
+        'string.pattern.base': 'CPF deve conter exatamente 11 dígitos',
+        'any.required': 'CPF é obrigatório'
+    }),
     
     email: Joi.string().email().required().messages({
         'string.email': 'E-mail deve ser válido',
