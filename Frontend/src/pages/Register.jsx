@@ -8,18 +8,48 @@ function Register({ onBack, onRegister }) {
         email: '',
         phone: '',
         password: '',
-        userType: 'parent',
+    });
+
+    const [errors, setErrors] = useState({
+        cpf: '',
+        password: ''
     });
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+
+        if (name === 'cpf') {
+            const onlyNumbers = value.replace(/\D/g, '').slice(0, 11);
+            setFormData({ ...formData, cpf: onlyNumbers });
+            setErrors({ ...errors, cpf: '' });
+        } else if (name === 'password') {
+            setFormData({ ...formData, password: value });
+            setErrors({ ...errors, password: '' });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        let hasError = false;
+        const newErrors = {};
+
+        if (formData.cpf.length !== 11) {
+            newErrors.cpf = 'CPF deve ter exatamente 11 dígitos';
+            hasError = true;
+        }
+
+        if (formData.password.length < 6) {
+            newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
+            hasError = true;
+        }
+
+        if (hasError) {
+            setErrors(newErrors);
+            return;
+        }
 
         const payload = {
             name_parent: formData.name,
@@ -46,19 +76,6 @@ function Register({ onBack, onRegister }) {
 
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
-                                <label className="form-label">Tipo de Cadastro</label>
-                                <select
-                                    name="userType"
-                                    className="form-select"
-                                    value={formData.userType}
-                                    onChange={handleChange}
-                                    disabled // apenas responsável por enquanto
-                                >
-                                    <option value="parent">Responsável</option>
-                                </select>
-                            </div>
-
-                            <div className="mb-3">
                                 <label className="form-label">Nome Completo</label>
                                 <input
                                     type="text"
@@ -71,7 +88,7 @@ function Register({ onBack, onRegister }) {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">CPF (somente números)</label>
+                                <label className="form-label">CPF (11 dígitos, apenas números)</label>
                                 <input
                                     type="text"
                                     name="cpf"
@@ -80,6 +97,7 @@ function Register({ onBack, onRegister }) {
                                     onChange={handleChange}
                                     required
                                 />
+                                {errors.cpf && <small className="text-danger">{errors.cpf}</small>}
                             </div>
 
                             <div className="mb-3">
@@ -115,6 +133,7 @@ function Register({ onBack, onRegister }) {
                                     onChange={handleChange}
                                     required
                                 />
+                                {errors.password && <small className="text-danger">{errors.password}</small>}
                             </div>
 
                             <button type="submit" className="btn btn-warning w-100">
