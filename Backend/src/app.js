@@ -13,13 +13,9 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Muitas requisições, tente novamente mais tarde.'
-});
+app.set('trust proxy', 1);
 
-app.use(limiter);
+app.use(helmet());
 
 const allowedOrigins = [
   'https://route-guardian.vercel.app',
@@ -27,26 +23,38 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function(origin, callback){
+  origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Não permitido pelo CORS'));
+      return callback(null, true);
     }
+    return callback(new Error('Não permitido pelo CORS'));
   },
-  methods: ['GET','POST','PUT','DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
+app.options('*', cors());
+
 app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Muitas requisições, tente novamente mais tarde.'
+});
+
+app.use(limiter);
+
 app.use('/api/drivers', driverRoutes);
 app.use('/api', authRoutes);
 app.use('/api/routes', routeRoutes);
 app.use('/api/parents', parentRoutes);
 app.use('/api/geo', geoProxyRoutes);
 app.use('/api/geo', geoRoutes);
-app.use(helmet());
 
 async function testConnection() {
     try {
