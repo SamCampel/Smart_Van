@@ -46,7 +46,7 @@ const AuthService = {
         };
     },
 
-    async registerParent({ name_parent, email, phone, password }) {
+    async registerParent({ name_parent, cpf, email, phone, password }) {
         const existingParent = await ParentRepository.findByEmail(email);
         if (existingParent) {
             throw new Error('Email já cadastrado');
@@ -57,6 +57,7 @@ const AuthService = {
         await ParentRepository.create({
             name_parent,
             email,
+            cpf,
             phone,
             password_hash
         });
