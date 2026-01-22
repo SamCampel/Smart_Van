@@ -1,10 +1,10 @@
-const DriverRepository = require ('../repositories/DriverRepository');
+const DriverRepository = require('../repositories/DriverRepository');
 const ParentRepository = require('../repositories/ParentRepository');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/auth');
-const { id } = require('../models/DriverValidation');
 
 const AuthService = {
+
     async login(email, password, userType) {
         let user;
         let userTable;
@@ -35,29 +35,33 @@ const AuthService = {
             userType: userTable
         });
 
-        if (userType === 'driver') {
-            return {
-                token,
-                user: {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name_driver,
-                    vehicle_plate: user.vehicle_plate,
-                    userType: 'driver'
-                }
-            };
-        } else {
-            return {
-                token,
-                user: {
-                    id: user.id,
-                    email: user.email,
-                    name: user.name,
-                    phone: user.phone,
-                    userType: 'parent'
-                }
-            };
+        return {
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name || user.name_driver,
+                userType: userTable
+            }
+        };
+    },
+
+    async registerParent({ name_parent, email, phone, password }) {
+        const existingParent = await ParentRepository.findByEmail(email);
+        if (existingParent) {
+            throw new Error('Email já cadastrado');
         }
+
+        const password_hash = await bcrypt.hash(password, 10);
+
+        await ParentRepository.create({
+            name_parent,
+            email,
+            phone,
+            password_hash
+        });
+
+        return { message: 'Cadastro realizado com sucesso' };
     }
 };
 
