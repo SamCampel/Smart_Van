@@ -1,4 +1,4 @@
-Para funcionar:
+Para funcionar localmente:
 
 Abra 2 terminais no vscode:
 
@@ -23,3 +23,7 @@ Por último:
 ~ npm install
 
 ~ npm run dev
+
+Link em produção:
+
+https://route-guardian.vercel.app
