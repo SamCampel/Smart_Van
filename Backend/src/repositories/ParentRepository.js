@@ -10,6 +10,7 @@ const ParentRepository = {
         const values = [
             parentData.name_parent,
             parentData.email,
+            parentData.cpf,
             parentData.phone,
             parentData.password_hash
         ];

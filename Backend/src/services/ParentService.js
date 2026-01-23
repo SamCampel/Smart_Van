@@ -32,7 +32,7 @@ const ParentsService = {
                 email: parentData.email,
                 cpf: parentData.cpf,
                 phone: parentData.phone,
-                cpf: parentData.cpf
+
             };
         } catch (error) {
             throw error;
