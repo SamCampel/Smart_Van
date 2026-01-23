@@ -33,7 +33,7 @@ function AppRoutes() {
       const endpoint = formData.userType === 'driver' ? '/drivers' : '/parents';
 
       const response = await API.post(endpoint, {
-        name_driver: formData.name,
+        name_parent: formData.name,
         email: formData.email,
         cpf: formData.cpf,
         phone: formData.phone,
