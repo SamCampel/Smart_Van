@@ -30,7 +30,7 @@ const AuthController = {
 
     async register(req, res) {
         try {
-            const { name_parent, cpf, email, phone, password } = req.body;
+            const { name_parent, email, phone, password, cpf } = req.body;
 
             if (!name_parent || !email || !password) {
                 return res.status(400).json({
@@ -41,10 +41,10 @@ const AuthController = {
 
             const result = await AuthService.registerParent({
                 name_parent,
-                cpf,
                 email,
                 phone,
-                password
+                password,
+                cpf
             });
 
             return res.status(201).json({

@@ -30,7 +30,9 @@ const ParentsService = {
                 id: result.insertId,
                 name_parent: parentData.name_parent,
                 email: parentData.email,
+                cpf: parentData.cpf,
                 phone: parentData.phone,
+                cpf: parentData.cpf
             };
         } catch (error) {
             throw error;

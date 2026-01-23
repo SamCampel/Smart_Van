@@ -3,8 +3,8 @@ const pool = require('../config/database');
 const ParentRepository = {
     async create(parentData) {
         const sql = `
-            INSERT INTO parents (name_parent, email, phone, password_hash)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO parents (name_parent, email, cpf, phone, password_hash)
+            VALUES (?, ?, ?, ?, ?)
         `;
         
         const values = [
