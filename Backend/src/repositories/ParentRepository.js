@@ -19,7 +19,7 @@ const ParentRepository = {
             const [result] = await pool.execute(sql, values);
             return result;
         } catch (error) {
-            throw error;
+            console.log(error.message);
         }
     },
 
