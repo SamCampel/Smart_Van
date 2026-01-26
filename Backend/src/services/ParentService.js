@@ -40,4 +40,4 @@ const ParentsService = {
     }
 };
 
-module.exports = ParentsService;
+module.exports = ParentService;
