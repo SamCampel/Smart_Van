@@ -1,36 +1,12 @@
-const pool = require('../config/database');
+const Parent = require('../models/Parent');
 
 const ParentRepository = {
-    async create(parentData) {
-        const sql = `
-            INSERT INTO parents (name_parent, email, cpf, phone, password_hash)
-            VALUES (?, ?, ?, ?, ?)
-        `;
-        
-        const values = [
-            parentData.name_parent,
-            parentData.email,
-            parentData.cpf,
-            parentData.phone,
-            parentData.password_hash
-        ];
-
-        try {
-            const [result] = await pool.execute(sql, values);
-            return result;
-        } catch (error) {
-            console.log(error.message);
-        }
+    create(parentData) {
+        return Parent.create(parentData);
     },
 
-    async findByEmail(email) {
-        const sql = 'SELECT * FROM parents WHERE email = ?';
-        try {
-            const [rows] = await pool.execute(sql, [email]);
-            return rows[0] || null;
-        } catch (error) {
-            throw error;
-        }
+    findByEmail(email) {
+        return Parent.findOne({ email });
     }
 };
 
