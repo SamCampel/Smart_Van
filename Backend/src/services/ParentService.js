@@ -2,7 +2,7 @@ const ParentRepository = require('../repositories/ParentRepository');
 const parentSchema = require('../models/ParentValidation');
 const bcrypt = require('bcryptjs');
 
-const ParentsService = {
+const ParentService = {
     async registerParent(parentData) {
         try {
 
